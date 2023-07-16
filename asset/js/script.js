@@ -1274,7 +1274,7 @@ $(document).ready(function () {
 
         const heroBanner = document.getElementById("hero-slider");
         heroBanner.innerHTML = "";
-        // movies = movies.slice(0, 10);
+        movies = movies.slice(0, 10);
         movies.forEach((movie) => {
             console.log("every each")
 
