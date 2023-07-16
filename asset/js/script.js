@@ -5,11 +5,13 @@ const SEARCHAPI =
 
 
 const main = document.getElementById("content");
-const form = document.getElementById("form");
-const search = document.getElementById("search");
+
 
 
 const discoverMovie = [
+    {
+        header: "test/json"
+    },
     {
         "adult": false,
         "backdrop_path": "/27u4kBGGOQLqizEudJAOWMkvhip.jpg",
@@ -1215,48 +1217,87 @@ const topRated = [
     }
 ]
 
-showMovies(nowPlaying);
-
+// showMovies(nowPlaying);
 
 
 // getMovies(APIURL);
 
-async function getMovies(url) {
-    const resp = await fetch(url);
-    const respData = await resp.json();
+// async function getMovies(url) {
+//     const resp = await fetch(url);
+//     const respData = await resp.json();
 
-    console.log(respData);
+//     console.log(respData);
 
-    showMovies(respData.results);
+//     showMovies(respData.results);
+// }
+
+
+
+// MARK Fetch movies from API
+async function fetchData(URL) {
+    try {
+        const data = await fetch(URL).then((res) => res.json())
+        return data
+    } catch (error) {
+        console.log(error.message)
+        return null
+    }
 }
 
+// MARK Show all fetched movies
+const fetchAndShowResults = async (URL) => {
+    const movies = await fetchData(URL)
+    movies && showMovies(movies.results)
+}
+
+// fetchAndShowResults(APIURL);
+// showMovies(nowPlaying)
+
+// MARK Movie details
+const fetchAndShowMovie = async (URL) => {
+    const movie = await fetchData(URL)
+    movie && showMovies(movie.results)
+}
+
+
+// MARK Send all movie to html    
 function showMovies(movies) {
+
+    // NOTE to remove 
+    (movies[0].header == "test/json")
+    test = true
+
+
+
     main.innerHTML = "";
     movies.forEach((movie) => {
+
         const { poster_path, title, vote_average, overview, release_date } = movie;
+
 
         const movieEl = document.createElement("div");
         movieEl.classList.add("movie");
 
         movieEl.innerHTML = `
 
-    <img src="${IMGPATH + poster_path}"
-        alt="${title}" class="poster">
-   <h3 class="movie-title">
-        <p class="${getClassByRate(vote_average)}  rating">${vote_average}</p>
-        <p> ${title} </p>
-    </h3>
+                <img src="${(test) ? "asset/img/poster.jpg" : IMGPATH + poster_path}"
 
-    <div class="overview">
-        <a href="#">
-            <h3>${title}</h3>
-            <p>${release_date.slice(0, 4)}</p>
-            <p class="summary">
-                ${overview}
-            </p>
-            <span class="seemore">See more→</span>
-        </a>
-    </div>
+                    alt="${title}" class="poster">
+            <h3 class="movie-title">
+                    <p class="${getColorVoteAverage(vote_average)}  rating">${vote_average}</p>
+                    <p> ${title} </p>
+                </h3>
+
+                <div class="overview">
+                    <a href="#">
+                        <h3>${title}</h3>
+                        <p>${release_date.slice(0, 4)}</p>
+                        <p class="summary">
+                            ${overview}
+                        </p>
+                        <span class="seemore">See more→</span>
+                    </a>
+                </div>
  
         `;
 
@@ -1264,25 +1305,26 @@ function showMovies(movies) {
     });
 }
 
-function getClassByRate(vote) {
-    if (vote >= 8) {
+function getColorVoteAverage(vote) {
+    if (vote >= 8)
         return "green-rate";
-    } else if (vote >= 5) {
+    if (vote >= 5)
         return "orange-rate";
-    } else {
+    if (vote >= 0)
         return "red-rate";
-    }
+
 }
 
-form.addEventListener("submit", (e) => {
+
+
+// MARK Search Mehod
+document.getElementById("form").addEventListener("submit", (e) => {
     e.preventDefault();
-
-    const searchTerm = search.value;
-
-    if (searchTerm) {
-        getMovies(SEARCHAPI + searchTerm);
-
-        search.value = "";
+    const searchEl = document.getElementById("search");
+    const searchValue = searchEl.value;
+    if (searchValue) {
+        getMovies(SEARCHAPI + searchValue);
+        searchEl.value = "";
     }
 });
 
