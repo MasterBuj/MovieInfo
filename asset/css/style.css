@@ -4,7 +4,7 @@
  }
 
  ::-webkit-scrollbar-thumb {
-     background: var(--highlight);
+     background: var(--primary);
  }
 
  ::placeholder {
@@ -16,7 +16,7 @@
      transition: 0.2s ease-in-out;
 
      --bg: #162032;
-     --primary: #0466cf;
+     --primary: #0099ff;
      --inactive: #131720;
      --highlight: #06024d;
  }
@@ -182,11 +182,11 @@
  /* MARK Hero banner */
  .hero-banner {
      width: 100%;
-     height: 100%;
-     display: flex;
+     height: 95vh;
+     position: relative;
+     display: flex !important;
      justify-content: flex-end;
      align-items: flex-end;
-     position: relative;
 
  }
 
@@ -204,7 +204,9 @@
      content: "";
      width: 100%;
      height: 100%;
-     background: linear-gradient(91deg, #131720 0, rgb(36 36 40 / 0%) 50%, #24242800 100%);
+     background: linear-gradient(90deg, #131720 0, rgb(36 36 40 / 0%) 50%, #24242800 100%),
+         linear-gradient(358deg, #131720 0, rgb(36 36 40 / 0%) 50%, #24242800 100%),
+         linear-gradient(180deg, #13172059 0, rgb(36 36 40 / 0%) 50%, #24242800 100%);
      position: absolute;
  }
 
