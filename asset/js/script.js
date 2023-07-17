@@ -75,9 +75,21 @@ $(document).ready(function () {
         movies.forEach((movie) => {
 
             const { poster_path, title, vote_average, overview, release_date, backdrop_path, genre_ids } = movie;
-            const movieEl = document.createElement("div");
-            movieEl.classList.add("hero-banner");
-            movieEl.innerHTML = `
+
+            if (poster_path != null && vote_average != 0) {
+
+                let genreEl = ""
+                genre_ids.forEach(genre_id => {
+                    GENRES.forEach(genre => {
+                        if (genre.id == genre_id) {
+                            genreEl += `<a id="${genre.id}_${genre.name}" class="hero-genre">${genre.name}</a>`
+                        }
+                    })
+                });
+
+                const movieEl = document.createElement("div");
+                movieEl.classList.add("hero-banner");
+                movieEl.innerHTML = `
                     <div class="hero-img">
                         <img src="${IMGPATH + backdrop_path}" alt="Hero banner">
                     </div>
@@ -87,8 +99,8 @@ $(document).ready(function () {
                         <div class="subtitle">
                             <p>${release_date.slice(0, 4)}</p>
                             <p class="${getColorVoteAverage(vote_average)} font">${vote_average}</p>
-                            <p>
-                            <a href="#" id="${genre_ids}">${genre_ids}</a>
+                            <p class="genre-list"> 
+                            ${genreEl}
                         </p>
                         </div>
                         <p class="desc">
@@ -99,10 +111,16 @@ $(document).ready(function () {
  
         `;
 
-            heroBanner.appendChild(movieEl);
+                heroBanner.appendChild(movieEl);
+            }
         });
 
-
+        document.querySelectorAll(".hero-genre").forEach(genre => {
+            genre.addEventListener("click", (e) => {
+                console.log(e.target.id.split("_")[0])
+                getshowMoviePosters(FILTER_BY_GENRE + e.target.id.split("_")[0])
+            })
+        })
 
         $("#hero-slider").slick({
             infinite: true,
@@ -136,7 +154,7 @@ $(document).ready(function () {
                 let selected_tags = []
                 tagsEl.classList.toggle("selected-genre")
                 document.querySelectorAll(".selected-genre").forEach((a) => { selected_tags.push(a.id) })
-                console.log(FILTER_BY_GENRE + encodeURI(selected_tags.join(",")))
+                // console.log(FILTER_BY_GENRE + encodeURI(selected_tags.join(",")))
                 getshowMoviePosters(FILTER_BY_GENRE + encodeURI(selected_tags.join(",")))
             })
         });
@@ -155,7 +173,6 @@ $(document).ready(function () {
         const movies = await getMovies(URL)
         movies && showMovieHeroBanners(movies.results)
     }
-
 
 
 
