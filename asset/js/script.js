@@ -4,9 +4,6 @@ const BASE_URL = "https://api.themoviedb.org/3"
 const API_KEY = "&api_key=04c35731a5ee918f014970082a0088b1"
 const API_URL = BASE_URL + "/discover/movie?sort_by=popularity.desc" + API_KEY
 
-const TRENDING_MOVIE = BASE_URL + "/trending/movie/week" + API_KEY
-const NOW_PLAYING = BASE_URL + "/movie/now_playing?page=1" + API_KEY
-
 const SEARCH_URL = BASE_URL + "/search/movie?" + API_KEY + "&query="
 
 const FILTER_BY_GENRE = API_URL + "&with_genres="
@@ -204,6 +201,14 @@ $(document).ready(function () {
         getshowMoviePosters(API_URL)
         getshowMovieHeroBanners(NOW_PLAYING)
         ShowMovieGenres()
+
+        document.querySelectorAll(".nav-link").forEach(nav_link => {
+            nav_link.addEventListener("click", nav => {
+                let link = nav.target.innerHTML.trim().toLowerCase()
+                getshowMoviePosters(BASE_URL + "/movie/" + link.replace(" ", "_") + "?page=1" + API_KEY)
+            })
+        })
+
     }
     homePage()
 

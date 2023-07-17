@@ -126,16 +126,6 @@
      box-shadow: 10px 10px 0 #393939;
  }
 
- .nav-link-span::before {
-     content: "";
-     transition: 0.5s;
-     margin-right: 0px;
- }
-
- .nav-link:hover .nav-link-span::before {
-     transition: 0.5s;
-     /* margin-right: 10px; */
- }
 
 
 
